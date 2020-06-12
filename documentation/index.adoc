@@ -1,0 +1,17 @@
+= Resource sets in golang
+:toc: left
+
+== Scope definition maintenance
+
+[source,json]
+----
+GET http://photoz.example.com/dev/scopes/view
+
+{
+  "name" : "View Photo and Related Info",
+  "icon_uri" : "http://www.example.com/icons/reading-glasses.png"
+}
+----
+
+
+== Resource set maintenance
