@@ -1,13 +1,13 @@
 package scopes
 
 import (
-	"testing"
 	"net/url"
+	"testing"
 )
 
 func TestCreate(t *testing.T) {
 	db := NewInMemoryDB()
-	url,_ :=  url.Parse("http://www.example.com/scopes/view")
+	url, _ := url.Parse("http://www.example.com/scopes/view")
 	sn, e := db.Get(*url)
 
 	if e == nil {
@@ -18,8 +18,8 @@ func TestCreate(t *testing.T) {
 		t.Errorf("Found a non-existing object!")
 	}
 
-	gu := getUrl("http://www.example.com/scopes.view")
-	scope := NewScopeName(gu, "view", getUrl("http://geenidee"))
+	gu := getURL("http://www.example.com/scopes.view")
+	scope := NewScopeName(gu, "view", getURL("http://geenidee"))
 	scopeName, error := db.Create(*url, scope)
 
 	if error != nil {
@@ -38,7 +38,7 @@ func TestCreate(t *testing.T) {
 	}
 }
 
-func getUrl(s string) url.URL {
-	url,_ := url.Parse(s)
+func getURL(s string) url.URL {
+	url, _ := url.Parse(s)
 	return *url
 }
