@@ -25,7 +25,7 @@ func TestCreate(t *testing.T) {
 	if error != nil {
 		t.Errorf("Creating scope in DB failed.")
 	}
-	if scopeName.scope != gu {
+	if scopeName.url != gu {
 		t.Errorf("Scope url not equals.")
 	}
 
@@ -33,7 +33,7 @@ func TestCreate(t *testing.T) {
 	if e2 != nil {
 		t.Errorf("Getting error")
 	}
-	if scopeName.scope != getDb.scope {
+	if scopeName.url != getDb.url {
 		t.Errorf("Wrong one returned.")
 	}
 }

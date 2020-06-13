@@ -4,17 +4,20 @@ import "net/url"
 
 // ScopeName contains the url of the scope and the scope itself
 type ScopeName struct {
-	scope url.URL
-	Scope
+	url   url.URL
+	scope Scope
 }
 
-// Scope is the name and the icon url
+// Scope is the human understandable name/description and the icon url
 type Scope struct {
-	name    string
-	iconURI url.URL
+	description string
+	iconURI     url.URL
 }
 
-// ScopeDescription is the set of functions we have available on a Scope
+// ScopeDescription is the set of functions we can do with a Scope:
+// Get: retrieve the scope by its URL, throws error when not available,
+// Create: create for the URL a new Scope. If the URL already has a scope, it is overwritten,
+// Delete: deletes the scope that belongs to the URL.
 type ScopeDescription interface {
 	Get(name url.URL) (*Scope, error)
 	Create(name url.URL, scope Scope)
@@ -23,20 +26,27 @@ type ScopeDescription interface {
 
 // ScopeDescriptionUseCase is the use case
 type ScopeDescriptionUseCase struct {
-	scopeDb ScopeDescription
+	scopeDb ScopeDbUseCase
 }
 
-// Get is for retrieval of a Scope
+// Get the scope by its URL
 func (s *ScopeDescriptionUseCase) Get(name url.URL) (*Scope, error) {
-	return nil, nil
+	sn, error := s.Get(name)
+
+	if error != nil {
+		return nil, error
+	}
+	return &Scope{sn.description, sn.iconURI}, nil
 }
 
-// Create is for creating a scope
+// Create the scope for an URL
 func (s *ScopeDescriptionUseCase) Create(name url.URL, scope Scope) {
+	s.Create(name, scope)
 }
 
-// Delete is for deleting a scope
+// Delete the scope for the URL
 func (s *ScopeDescriptionUseCase) Delete(name url.URL) {
+	s.Delete(name)
 }
 
 // NewScopeName is to be used for creating a new scope
