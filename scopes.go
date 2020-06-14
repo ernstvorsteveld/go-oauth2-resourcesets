@@ -32,12 +32,12 @@ type ScopeDescriptionUseCase struct {
 
 // Get the scope by its URL
 func (s *ScopeDescriptionUseCase) Get(name url.URL) (*Scope, error) {
-	sn, error := s.Get(name)
+	sn, error := s.scopeDb.Get(name)
 
 	if error != nil {
 		return nil, error
 	}
-	return &Scope{sn.description, sn.iconURI}, nil
+	return &Scope{sn.scope.description, sn.scope.iconURI}, nil
 }
 
 // Create the scope for an URL

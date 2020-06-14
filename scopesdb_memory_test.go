@@ -1,14 +1,16 @@
 package scopes
 
 import (
+	"fmt"
 	"net/url"
+	"strconv"
 	"testing"
 )
 
-func TestCreate(t *testing.T) {
-	db := NewInMemoryDB()
-	url, _ := url.Parse("http://www.example.com/scopes/view")
-	sn, e := db.Get(*url)
+func Test_get_in_empty_database_should_fail(t *testing.T) {
+	var db ScopeDbUseCase = NewInMemoryDB()
+	gu := GetURL("http://www.example.com/scopes.view")
+	sn, e := db.Get(gu)
 
 	if e == nil {
 		t.Errorf("Should not find an non existing scope.")
@@ -17,10 +19,13 @@ func TestCreate(t *testing.T) {
 	if sn != nil {
 		t.Errorf("Found a non-existing object!")
 	}
+}
 
-	gu := getURL("http://www.example.com/scopes.view")
-	scope := NewScopeName(gu, "view", getURL("http://geenidee"))
-	scopeName, error := db.Create(*url, scope)
+func Test_create_and_get(t *testing.T) {
+	var db ScopeDbUseCase = NewInMemoryDB()
+	gu := GetURL("http://www.example.com/scopes.view")
+	scope := NewScopeName(gu, "view", GetURL("http://geenidee"))
+	scopeName, error := db.Create(gu, scope)
 
 	if error != nil {
 		t.Errorf("Creating scope in DB failed.")
@@ -29,7 +34,7 @@ func TestCreate(t *testing.T) {
 		t.Errorf("Scope url not equals.")
 	}
 
-	getDb, e2 := db.Get(*url)
+	getDb, e2 := db.Get(gu)
 	if e2 != nil {
 		t.Errorf("Getting error")
 	}
@@ -38,7 +43,31 @@ func TestCreate(t *testing.T) {
 	}
 }
 
-func getURL(s string) url.URL {
+func Test_create_and_delete(t *testing.T) {
+	var db ScopeDbUseCase = NewInMemoryDB()
+	expectScopesInDb(db, 100)
+
+	gu := GetURL("http://www.example.com/scopes.view5")
+	db.Delete(gu)
+
+	_, e2 := db.Get(gu)
+	if e2 == nil {
+		t.Errorf("Can still find the deleted object")
+	}
+}
+
+func expectScopesInDb(db ScopeDbUseCase, n int) {
+	for i := 0; i < n; i++ {
+		gu := GetURL("http://www.example.com/scopes.view" + strconv.Itoa(i))
+		scope := NewScopeName(gu, "view"+strconv.Itoa(i), GetURL("http://geenidee"+strconv.Itoa(i)))
+		_, e := db.Create(gu, scope)
+		if e != nil {
+			fmt.Printf("Could not create a scope.")
+		}
+	}
+}
+
+func GetURL(s string) url.URL {
 	url, _ := url.Parse(s)
 	return *url
 }
