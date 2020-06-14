@@ -42,12 +42,16 @@ func (s *ScopeDescriptionUseCase) Get(name url.URL) (*Scope, error) {
 
 // Create the scope for an URL
 func (s *ScopeDescriptionUseCase) Create(name url.URL, scope Scope) {
-	s.Create(name, scope)
+	sn := ScopeName{
+		url:   name,
+		scope: scope,
+	}
+	s.scopeDb.Create(name, sn)
 }
 
 // Delete the scope for the URL
 func (s *ScopeDescriptionUseCase) Delete(name url.URL) {
-	s.Delete(name)
+	s.scopeDb.Delete(name)
 }
 
 // NewScopeName is to be used for creating a new scope
