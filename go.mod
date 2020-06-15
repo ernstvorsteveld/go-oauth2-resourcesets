@@ -1,3 +1,3 @@
-module github.com/ernstvorsteveld/go-oauth2-resourcesets/v1
+module github.com/ernstvorsteveld/go-oauth2-resourcesets
 
 go 1.14
