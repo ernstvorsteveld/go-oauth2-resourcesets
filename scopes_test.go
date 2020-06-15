@@ -24,8 +24,8 @@ func Test_should_create_and_get(t *testing.T) {
 	}
 	gu := GetURL("https://not.oke.com")
 	scope := Scope{
-		description: "view",
-		iconURI:     GetURL("http://geenidee"),
+		Description: "view",
+		IconURI:     GetURL("http://geenidee"),
 	}
 	uc.Create(gu, scope)
 	s, e := uc.Get(gu)

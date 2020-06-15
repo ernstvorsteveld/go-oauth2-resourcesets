@@ -4,14 +4,14 @@ import "net/url"
 
 // ScopeName contains the url of the scope and the scope itself
 type ScopeName struct {
-	url   url.URL
-	scope Scope
+	URL   url.URL
+	Scope Scope
 }
 
 // Scope is the human understandable name/description and the icon url
 type Scope struct {
-	description string
-	iconURI     url.URL
+	Description string
+	IconURI     url.URL
 }
 
 // ScopeDescription is the set of functions we can do with a Scope:
@@ -36,14 +36,14 @@ func (s *ScopeDescriptionUseCase) Get(name url.URL) (*Scope, error) {
 	if error != nil {
 		return nil, error
 	}
-	return &Scope{sn.scope.description, sn.scope.iconURI}, nil
+	return &Scope{sn.Scope.Description, sn.Scope.IconURI}, nil
 }
 
 // Create the scope for an URL
 func (s *ScopeDescriptionUseCase) Create(name url.URL, scope Scope) {
 	sn := ScopeName{
-		url:   name,
-		scope: scope,
+		URL:   name,
+		Scope: scope,
 	}
 	s.ScopeDb.Create(name, sn)
 }
@@ -56,15 +56,15 @@ func (s *ScopeDescriptionUseCase) Delete(name url.URL) {
 // NewScopeName is to be used for creating a new scope
 func NewScopeName(u url.URL, s string, i url.URL) ScopeName {
 	return ScopeName{
-		url:   u,
-		scope: NewScope(s, i),
+		URL:   u,
+		Scope: NewScope(s, i),
 	}
 }
 
 // NewScope to create a new Scope
 func NewScope(s string, u url.URL) Scope {
 	return Scope{
-		description: s,
-		iconURI:     u,
+		Description: s,
+		IconURI:     u,
 	}
 }
