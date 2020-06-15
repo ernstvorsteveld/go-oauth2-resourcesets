@@ -18,7 +18,6 @@ type Scope struct {
 // Get: retrieve the scope by its URL, throws error when not available,
 // Create: create for the URL a new Scope. If the URL already has a scope, it is overwritten,
 // Delete: deletes the scope that belongs to the URL.
-//
 type ScopeDescription interface {
 	Get(name url.URL) (*Scope, error)
 	Create(name url.URL, scope Scope)
