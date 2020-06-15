@@ -26,12 +26,12 @@ type ScopeDescription interface {
 
 // ScopeDescriptionUseCase is the use case
 type ScopeDescriptionUseCase struct {
-	scopeDb ScopeDbUseCase
+	ScopeDb ScopeDbUseCase
 }
 
 // Get the scope by its URL
 func (s *ScopeDescriptionUseCase) Get(name url.URL) (*Scope, error) {
-	sn, error := s.scopeDb.Get(name)
+	sn, error := s.ScopeDb.Get(name)
 
 	if error != nil {
 		return nil, error
@@ -45,12 +45,12 @@ func (s *ScopeDescriptionUseCase) Create(name url.URL, scope Scope) {
 		url:   name,
 		scope: scope,
 	}
-	s.scopeDb.Create(name, sn)
+	s.ScopeDb.Create(name, sn)
 }
 
 // Delete the scope for the URL
 func (s *ScopeDescriptionUseCase) Delete(name url.URL) {
-	s.scopeDb.Delete(name)
+	s.ScopeDb.Delete(name)
 }
 
 // NewScopeName is to be used for creating a new scope
