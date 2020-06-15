@@ -4,14 +4,14 @@ import "net/url"
 
 // ScopeNameDB is the type that is stored in the DB
 type ScopeNameDB struct {
-	URL     url.URL
+	URL     string
 	ScopeDB ScopeDB
 }
 
 // ScopeDB is the type that is stored in the DB
 type ScopeDB struct {
 	Description string
-	IconURI     url.URL
+	IconURI     string
 }
 
 // ScopeDbUseCase are the possible actions with a Scope in the DB
@@ -24,20 +24,21 @@ type ScopeDbUseCase interface {
 // MapTo is used to map a Scope to a DB Scope
 func MapTo(scope ScopeName) *ScopeNameDB {
 	return &ScopeNameDB{
-		URL: scope.URL,
+		URL: scope.URL.String(),
 		ScopeDB: ScopeDB{
 			Description: scope.Scope.Description,
-			IconURI:     scope.Scope.IconURI},
+			IconURI:     scope.Scope.IconURI.String(),
+		},
 	}
 }
 
 // MapFrom is to map a DB Scope to a Scope
 func MapFrom(scope ScopeNameDB) *ScopeName {
 	return &ScopeName{
-		URL: scope.URL,
+		URL: GetURL(scope.URL),
 		Scope: Scope{
 			Description: scope.ScopeDB.Description,
-			IconURI:     scope.ScopeDB.IconURI,
+			IconURI:     GetURL(scope.ScopeDB.IconURI),
 		},
 	}
 }
