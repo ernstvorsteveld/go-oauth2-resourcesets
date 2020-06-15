@@ -54,6 +54,17 @@ func (s *ScopeDescriptionUseCase) Delete(name url.URL) {
 }
 
 // NewScopeName is to be used for creating a new scope
-func NewScopeName(u url.URL, n string, i url.URL) ScopeName {
-	return ScopeName{u, Scope{n, i}}
+func NewScopeName(u url.URL, s string, i url.URL) ScopeName {
+	return ScopeName{
+		url:   u,
+		scope: NewScope(s, i),
+	}
+}
+
+// NewScope to create a new Scope
+func NewScope(s string, u url.URL) Scope {
+	return Scope{
+		description: s,
+		iconURI:     u,
+	}
 }
