@@ -68,3 +68,9 @@ func NewScope(s string, u url.URL) Scope {
 		IconURI:     u,
 	}
 }
+
+// GetURL makes a url of a string value
+func GetURL(s string) url.URL {
+	url, _ := url.Parse(s)
+	return *url
+}

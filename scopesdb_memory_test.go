@@ -2,7 +2,6 @@ package scopes
 
 import (
 	"fmt"
-	"net/url"
 	"strconv"
 	"testing"
 )
@@ -65,9 +64,4 @@ func expectScopesInDb(db ScopeDbUseCase, n int) {
 			fmt.Printf("Could not create a scope.")
 		}
 	}
-}
-
-func GetURL(s string) url.URL {
-	url, _ := url.Parse(s)
-	return *url
 }
