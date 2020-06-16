@@ -1,44 +1,44 @@
 package scopes
 
-import "net/url"
-
 // ScopeNameDB is the type that is stored in the DB
 type ScopeNameDB struct {
-	URL     string
+	URL     URL
 	ScopeDB ScopeDB
 }
 
 // ScopeDB is the type that is stored in the DB
 type ScopeDB struct {
 	Description string
-	IconURI     string
+	IconURI     URL
 }
 
 // ScopeDbUseCase are the possible actions with a Scope in the DB
 type ScopeDbUseCase interface {
-	Get(name url.URL) (*ScopeName, error)
-	Create(name url.URL, scope ScopeName) (*ScopeName, error)
-	Delete(name url.URL)
+	Get(name URL) (*ScopeName, error)
+	Create(name URL, scope ScopeName) (*ScopeName, error)
+	Delete(name URL)
 }
 
 // MapTo is used to map a Scope to a DB Scope
 func MapTo(scope ScopeName) *ScopeNameDB {
+	u := scope.Scope.IconURI
 	return &ScopeNameDB{
-		URL: scope.URL.String(),
+		URL: scope.URL,
 		ScopeDB: ScopeDB{
 			Description: scope.Scope.Description,
-			IconURI:     scope.Scope.IconURI.String(),
+			IconURI:     *u,
 		},
 	}
 }
 
 // MapFrom is to map a DB Scope to a Scope
 func MapFrom(scope ScopeNameDB) *ScopeName {
+	u := scope.ScopeDB.IconURI
 	return &ScopeName{
-		URL: GetURL(scope.URL),
+		URL: scope.URL,
 		Scope: Scope{
 			Description: scope.ScopeDB.Description,
-			IconURI:     GetURL(scope.ScopeDB.IconURI),
+			IconURI:     &u,
 		},
 	}
 }
