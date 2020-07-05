@@ -92,17 +92,17 @@ func (g *Gateway) Upsert(name URL, scope Scope) {
 	upsert(g, name, scope)
 }
 
+// Delete the scope for the URL
+func (g *Gateway) Delete(name URL) {
+	g.gw.Delete(name)
+}
+
 func upsert(g *Gateway, name URL, scope Scope) {
 	sn := ScopeName{
 		URL:   name,
 		Scope: scope,
 	}
 	g.gw.Create(name, sn)
-}
-
-// Delete the scope for the URL
-func (g *Gateway) Delete(name URL) {
-	g.gw.Delete(name)
 }
 
 // NewScopeName is to be used for creating a new scope
