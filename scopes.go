@@ -56,24 +56,25 @@ type Scope struct {
 	IconURI     *URL   `json:"icon_uri"`
 }
 
-// ScopeDescription is the set of functions we can do with a Scope:
+// UseCases is the set of functions we can do with a Scope:
 // Get: retrieve the scope by its URL, throws error when not available,
 // Create: create for the URL a new Scope. If the URL already has a scope, it is overwritten,
 // Delete: deletes the scope that belongs to the URL.
-type ScopeDescription interface {
+type UseCases interface {
 	Get(name URL) (*Scope, error)
 	Create(name URL, scope Scope)
+	Upsert(name URL, scope Scope)
 	Delete(name URL)
 }
 
-// ScopeDescriptionUseCase is the use case
-type ScopeDescriptionUseCase struct {
-	gw Gateway
+// Gateway is the use case
+type Gateway struct {
+	gw GatewayUseCases
 }
 
 // Get the scope by its URL
-func (s *ScopeDescriptionUseCase) Get(name URL) (*Scope, error) {
-	sn, error := s.gw.Get(name)
+func (g *Gateway) Get(name URL) (*Scope, error) {
+	sn, error := g.gw.Get(name)
 
 	if error != nil {
 		return nil, error
@@ -82,17 +83,26 @@ func (s *ScopeDescriptionUseCase) Get(name URL) (*Scope, error) {
 }
 
 // Create the scope for an URL
-func (s *ScopeDescriptionUseCase) Create(name URL, scope Scope) {
+func (g *Gateway) Create(name URL, scope Scope) {
+	upsert(g, name, scope)
+}
+
+// Upsert will create when new, update when exists
+func (g *Gateway) Upsert(name URL, scope Scope) {
+	upsert(g, name, scope)
+}
+
+func upsert(g *Gateway, name URL, scope Scope) {
 	sn := ScopeName{
 		URL:   name,
 		Scope: scope,
 	}
-	s.gw.Create(name, sn)
+	g.gw.Create(name, sn)
 }
 
 // Delete the scope for the URL
-func (s *ScopeDescriptionUseCase) Delete(name URL) {
-	s.gw.Delete(name)
+func (g *Gateway) Delete(name URL) {
+	g.gw.Delete(name)
 }
 
 // NewScopeName is to be used for creating a new scope

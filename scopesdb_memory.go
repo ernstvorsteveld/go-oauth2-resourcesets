@@ -27,6 +27,15 @@ func (db *InMemoryDB) Get(name URL) (*ScopeName, error) {
 
 // Create is for creating
 func (db *InMemoryDB) Create(name URL, scope ScopeName) (*ScopeName, error) {
+	return createOrUpdate(db, name, scope)
+}
+
+// Upsert will create when new otherwise update
+func (db *InMemoryDB) Upsert(name URL, scope ScopeName) (*ScopeName, error) {
+	return createOrUpdate(db, name, scope)
+}
+
+func createOrUpdate(db *InMemoryDB, name URL, scope ScopeName) (*ScopeName, error) {
 	db.store[name] = MapTo(scope)
 	return &scope, nil
 }

@@ -17,7 +17,7 @@ func Test_NewScope(t *testing.T) {
 }
 
 func Test_should_not_get_when_empty_database(t *testing.T) {
-	var uc ScopeDescriptionUseCase = ScopeDescriptionUseCase{
+	var uc = Gateway{
 		gw: NewInMemoryDB(),
 	}
 
@@ -31,7 +31,7 @@ func Test_should_not_get_when_empty_database(t *testing.T) {
 }
 
 func Test_should_create_and_get(t *testing.T) {
-	var uc ScopeDescriptionUseCase = ScopeDescriptionUseCase{
+	var g Gateway = Gateway{
 		gw: NewInMemoryDB(),
 	}
 	gu := GetURL("https://not.oke.com")
@@ -40,8 +40,8 @@ func Test_should_create_and_get(t *testing.T) {
 		Description: "view",
 		IconURI:     &u,
 	}
-	uc.Create(gu, scope)
-	s, e := uc.Get(gu)
+	g.Create(gu, scope)
+	s, e := g.Get(gu)
 	if e != nil {
 		t.Errorf("Getting should work")
 	}
@@ -51,13 +51,13 @@ func Test_should_create_and_get(t *testing.T) {
 }
 
 func Test_should_be_able_to_delete_idempotent(t *testing.T) {
-	var uc ScopeDescriptionUseCase = ScopeDescriptionUseCase{
+	var g Gateway = Gateway{
 		gw: NewInMemoryDB(),
 	}
 
-	uc.Delete(GetURL("https://not.oke.com"))
-	uc.Delete(GetURL("https://not.oke.com"))
-	uc.Delete(GetURL("https://not.oke.com"))
+	g.Delete(GetURL("https://not.oke.com"))
+	g.Delete(GetURL("https://not.oke.com"))
+	g.Delete(GetURL("https://not.oke.com"))
 }
 
 func Test_should_marshall_and_unmarshall(t *testing.T) {
