@@ -56,44 +56,6 @@ type Scope struct {
 	IconURI     *URL   `json:"icon_uri"`
 }
 
-// Gateway is the use case
-type Gateway struct {
-	gw GatewayUseCases
-}
-
-// Get the scope by its URL
-func (g *Gateway) Get(name URL) (*Scope, error) {
-	sn, error := g.gw.Get(name)
-
-	if error != nil {
-		return nil, error
-	}
-	return &Scope{sn.Scope.Description, sn.Scope.IconURI}, nil
-}
-
-// Create the scope for an URL
-func (g *Gateway) Create(name URL, scope Scope) {
-	upsert(g, name, scope)
-}
-
-// Upsert will create when new, update when exists
-func (g *Gateway) Upsert(name URL, scope Scope) {
-	upsert(g, name, scope)
-}
-
-// Delete the scope for the URL
-func (g *Gateway) Delete(name URL) {
-	g.gw.Delete(name)
-}
-
-func upsert(g *Gateway, name URL, scope Scope) {
-	sn := ScopeName{
-		URL:   name,
-		Scope: scope,
-	}
-	g.gw.Create(name, sn)
-}
-
 // NewScopeName is to be used for creating a new scope
 func NewScopeName(u URL, s string, i string) ScopeName {
 	return ScopeName{
