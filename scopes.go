@@ -68,12 +68,12 @@ type ScopeDescription interface {
 
 // ScopeDescriptionUseCase is the use case
 type ScopeDescriptionUseCase struct {
-	ScopeDb ScopeDbUseCase
+	gw Gateway
 }
 
 // Get the scope by its URL
 func (s *ScopeDescriptionUseCase) Get(name URL) (*Scope, error) {
-	sn, error := s.ScopeDb.Get(name)
+	sn, error := s.gw.Get(name)
 
 	if error != nil {
 		return nil, error
@@ -87,12 +87,12 @@ func (s *ScopeDescriptionUseCase) Create(name URL, scope Scope) {
 		URL:   name,
 		Scope: scope,
 	}
-	s.ScopeDb.Create(name, sn)
+	s.gw.Create(name, sn)
 }
 
 // Delete the scope for the URL
 func (s *ScopeDescriptionUseCase) Delete(name URL) {
-	s.ScopeDb.Delete(name)
+	s.gw.Delete(name)
 }
 
 // NewScopeName is to be used for creating a new scope

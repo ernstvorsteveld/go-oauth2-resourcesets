@@ -18,7 +18,7 @@ func Test_NewScope(t *testing.T) {
 
 func Test_should_not_get_when_empty_database(t *testing.T) {
 	var uc ScopeDescriptionUseCase = ScopeDescriptionUseCase{
-		ScopeDb: NewInMemoryDB(),
+		gw: NewInMemoryDB(),
 	}
 
 	s, e := uc.Get(GetURL("https://not.oke.com"))
@@ -32,7 +32,7 @@ func Test_should_not_get_when_empty_database(t *testing.T) {
 
 func Test_should_create_and_get(t *testing.T) {
 	var uc ScopeDescriptionUseCase = ScopeDescriptionUseCase{
-		ScopeDb: NewInMemoryDB(),
+		gw: NewInMemoryDB(),
 	}
 	gu := GetURL("https://not.oke.com")
 	u := GetURL("http://geenidee")
@@ -52,7 +52,7 @@ func Test_should_create_and_get(t *testing.T) {
 
 func Test_should_be_able_to_delete_idempotent(t *testing.T) {
 	var uc ScopeDescriptionUseCase = ScopeDescriptionUseCase{
-		ScopeDb: NewInMemoryDB(),
+		gw: NewInMemoryDB(),
 	}
 
 	uc.Delete(GetURL("https://not.oke.com"))

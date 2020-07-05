@@ -12,13 +12,6 @@ type ScopeDB struct {
 	IconURI     URL
 }
 
-// ScopeDbUseCase are the possible actions with a Scope in the DB
-type ScopeDbUseCase interface {
-	Get(name URL) (*ScopeName, error)
-	Create(name URL, scope ScopeName) (*ScopeName, error)
-	Delete(name URL)
-}
-
 // MapTo is used to map a Scope to a DB Scope
 func MapTo(scope ScopeName) *ScopeNameDB {
 	u := scope.Scope.IconURI
