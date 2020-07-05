@@ -41,8 +41,9 @@ func createOrUpdate(db *InMemoryDB, name URL, scope ScopeName) (*ScopeName, erro
 }
 
 // Delete is for deleting
-func (db *InMemoryDB) Delete(name URL) {
+func (db *InMemoryDB) Delete(name URL) error {
 	if db.store[name] != nil {
 		delete(db.store, name)
 	}
+	return nil
 }

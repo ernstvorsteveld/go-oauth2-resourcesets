@@ -47,7 +47,10 @@ func Test_create_and_delete(t *testing.T) {
 	expectScopesInDb(db, 100)
 
 	gu := GetURL("http://www.example.com/scopes.view5")
-	db.Delete(gu)
+	var e error = db.Delete(gu)
+	if e != nil {
+		t.Errorf("Failed to delete")
+	}
 
 	_, e2 := db.Get(gu)
 	if e2 == nil {
