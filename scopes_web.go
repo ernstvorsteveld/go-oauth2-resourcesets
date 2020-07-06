@@ -11,13 +11,13 @@ type WebError struct {
 	Description   string `json:"error_description"`
 }
 
-// Controler is containing the use cases
-type Controler struct {
-	uc UseCases
+// Controller is containing the use cases
+type Controller struct {
+	uc ScopeUseCases
 }
 
 // Get gets the scope by url
-func (c *Controler) Get(name URL) ([]byte, error) {
+func (c *Controller) Get(name URL) ([]byte, error) {
 	var s, e1 = c.uc.Get(name)
 	if e1 != nil {
 		// handle the error!
@@ -32,17 +32,17 @@ func (c *Controler) Get(name URL) ([]byte, error) {
 }
 
 // Create creates a new scope
-func (c *Controler) Create(b []byte) ([]byte, error) {
+func (c *Controller) Create(b []byte) ([]byte, error) {
 	return nil, nil
 }
 
 // Update (partially) updates a scope
-func (c *Controler) Update(b []byte) ([]byte, error) {
+func (c *Controller) Update(b []byte) ([]byte, error) {
 	return nil, nil
 }
 
 // Delete removes a scope with name
-func (c *Controler) Delete(name URL) error {
+func (c *Controller) Delete(name URL) error {
 	c.uc.Delete(name) // old version does not return error yet!!!
 	return nil
 }
