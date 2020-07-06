@@ -1,6 +1,7 @@
 package scopes
 
 import (
+	"encoding/json"
 	"testing"
 )
 
@@ -12,5 +13,28 @@ func Test_NewScope(t *testing.T) {
 	}
 	if s.IconURI.URL.String() != expected {
 		t.Errorf("Scope iconURL is incorrect, expected %s, have %s\n", expected, s.IconURI.URL.String())
+	}
+}
+
+func Test_mashalling(t *testing.T) {
+	expectedURI := "http://www.example.com/api/resourcesets/s1"
+	expectedIconURI := "http://icon.example.com/s1"
+	expectedDescription := "scope s1"
+	var source []byte = []byte("{ \"url\" : \"" + expectedURI + "\",\"scope\" : { \"description\" : \"" + expectedDescription + "\", \"icon_uri\" : \"" + expectedIconURI + "\"}}")
+	var sn ScopeName = ScopeName{}
+	var e error
+	e = json.Unmarshal(source, &sn)
+	if e != nil {
+		t.Errorf("Unmarshalling of string failed, %s", e)
+	}
+	if sn.URL.String() != expectedURI {
+		t.Errorf("Unmarshalling failed, expected URL %s, got %s", expectedURI, sn.URL.String())
+	}
+	if sn.Scope.Description != expectedDescription {
+		t.Errorf("Unmarshalling failed, expected description %s, got %s", expectedDescription, sn.Scope.Description)
+	}
+
+	if sn.Scope.IconURI.String() != expectedIconURI {
+		t.Errorf("Unarshalling failed, expected icon uri %s, got %s", expectedIconURI, sn.Scope.IconURI)
 	}
 }

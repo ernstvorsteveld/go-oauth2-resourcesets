@@ -2,6 +2,15 @@ package scopes
 
 import "encoding/json"
 
+// WebError is the error object returned on an error
+type WebError struct {
+	Request       string `json:"request_url"`
+	DateTime      string `json:"date_time"`
+	CorrelationID string `json:"correlation_id"`
+	Code          string `json:"error_code"`
+	Description   string `json:"error_description"`
+}
+
 // Controler is containing the use cases
 type Controler struct {
 	uc UseCases
