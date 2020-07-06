@@ -1,0 +1,29 @@
+@startuml
+
+package Entities {
+    ScopeName -> Scope
+}
+
+package UseCases {
+    class ScopeUseCases
+}
+
+package Gateways {
+    class InMemoryDB 
+}
+
+package Web {
+    class Controller
+    class WebError
+}
+
+package Adapters {
+    class ControllerUseCases
+    class GatewayUseCases
+
+    GatewayUseCases <|-- InMemoryDB
+    ControllerUseCases <|-- Controller
+}
+
+
+@enduml
