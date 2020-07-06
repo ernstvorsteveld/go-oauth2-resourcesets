@@ -1,4 +1,4 @@
-@startuml
+@startuml "seperation-of-concerns"
 
 package Entities {
     ScopeName -> Scope
@@ -24,6 +24,5 @@ package Adapters {
     GatewayUseCases <|-- InMemoryDB
     ControllerUseCases <|-- Controller
 }
-
 
 @enduml
