@@ -1,3 +1,5 @@
 *.html
 *.out
 *.test
+kanweg.go
+kanweg_test.go
