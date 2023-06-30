@@ -1,4 +1,4 @@
-@startuml "seperation-of-concerns"
+@startuml "separation-of-concerns"
 
 package Entities {
     ScopeName -> Scope

@@ -3,9 +3,11 @@ package scopes
 import (
 	"encoding/json"
 	"net/url"
+
+	"github.com/pkg/errors"
 )
 
-// URL is type for url's
+// URL is type for urls
 type URL struct {
 	URL url.URL
 }
@@ -29,9 +31,11 @@ func (u *URL) MarshalJSON() ([]byte, error) {
 func (u *URL) UnmarshalJSON(b []byte) error {
 	URL, error := unMarshallString(b)
 	if error != nil {
-		return error
+		return errors.Wrap(&json.SyntaxError{
+			Offset: 0,
+		}, "Unmarshalling failed")
 	}
-	url := GetURL(URL)
+	url, _ := GetURL(URL)
 	u.URL = url.URL
 	return nil
 }
@@ -66,16 +70,19 @@ func NewScopeName(u URL, s string, i string) ScopeName {
 
 // NewScope to create a new Scope
 func NewScope(s string, u string) Scope {
-	url := GetURL(u)
+	url, _ := GetURL(u)
 	return Scope{
 		Description: s,
-		IconURI:     &url,
+		IconURI:     url,
 	}
 }
 
 // GetURL makes a url of a string value
-func GetURL(s string) URL {
-	u, _ := url.Parse(s)
+func GetURL(s string) (*URL, error) {
+	u, err := url.Parse(s)
+	if err != nil {
+		return nil, err
+	}
 	url := URL{URL: *u}
-	return url
+	return &url, nil
 }

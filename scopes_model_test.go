@@ -2,6 +2,7 @@ package scopes
 
 import (
 	"encoding/json"
+	"fmt"
 	"testing"
 )
 
@@ -36,5 +37,20 @@ func Test_mashalling(t *testing.T) {
 
 	if sn.Scope.IconURI.String() != expectedIconURI {
 		t.Errorf("Unarshalling failed, expected icon uri %s, got %s", expectedIconURI, sn.Scope.IconURI)
+	}
+}
+
+func Test_unmarshalling(t *testing.T) {
+	expectedURI := ""
+	expectedIconURI := "http://icon.example.com/s1"
+	expectedDescription := "scope s1"
+	document := `{ "url" : "` + expectedURI + `", "scope" : { "description" : "` + expectedDescription + `", "icon_uri" : "` + expectedIconURI + `"}}`
+	fmt.Printf("Document: \n%s\n", document)
+	var source []byte = []byte(document)
+	var sn ScopeName = ScopeName{}
+	var e error
+	e = json.Unmarshal(source, &sn)
+	if e == nil {
+		t.Errorf("Unmarshalling error expected!")
 	}
 }

@@ -10,7 +10,8 @@ func Test_should_not_get_when_empty_database(t *testing.T) {
 		gw: NewInMemoryDB(),
 	}
 
-	s, e := uc.Get(GetURL("https://not.oke.com"))
+	var u, e = GetURL("https://not.oke.com")
+	s, e := uc.Get(*u)
 	if e == nil {
 		t.Errorf("Should have an error, because Get should fail")
 	}
@@ -23,14 +24,17 @@ func Test_should_create_and_get(t *testing.T) {
 	var g Gateway = Gateway{
 		gw: NewInMemoryDB(),
 	}
-	gu := GetURL("https://not.oke.com")
-	u := GetURL("http://geenidee")
+	var gu, e = GetURL("https://not.oke.com")
+	if e != nil {
+		t.Errorf("GetURL should pass, but failed with error %v", e)
+	}
+	u, e := GetURL("http://geenidee")
 	scope := Scope{
 		Description: "view",
-		IconURI:     &u,
+		IconURI:     u,
 	}
-	g.Create(gu, scope)
-	s, e := g.Get(gu)
+	g.Create(*gu, scope)
+	s, e := g.Get(*gu)
 	if e != nil {
 		t.Errorf("Getting should work")
 	}
@@ -44,9 +48,10 @@ func Test_should_be_able_to_delete_idempotent(t *testing.T) {
 		gw: NewInMemoryDB(),
 	}
 
-	g.Delete(GetURL("https://not.oke.com"))
-	g.Delete(GetURL("https://not.oke.com"))
-	g.Delete(GetURL("https://not.oke.com"))
+	u, _ := GetURL("https://not.oke.com")
+	g.Delete(*u)
+	g.Delete(*u)
+	g.Delete(*u)
 }
 
 func Test_should_marshall_and_unmarshall(t *testing.T) {
